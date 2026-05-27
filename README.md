@@ -1,5 +1,5 @@
 
-# Level_2_project
+# Currency Convertor app
 
 <img src="./Images/banner1.png" alt="logo">
 
@@ -8,7 +8,7 @@ This repository contains the code and resources for my Level 2 project. This pro
 
 <img src="./Images/banner 2.png" alt="logo" width="400">
 
-## level 2 
+## my app
 - Currency Convertor Project
 
 Get Started
