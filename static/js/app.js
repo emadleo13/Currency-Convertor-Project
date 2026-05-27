@@ -1,5 +1,7 @@
-let currentLang = "fa";
+let currentLang = "en";
 let activeDropdown = null;
+
+const FLAG_URL = "https://flagcdn.com/w40/";
 
 const translations = {
     "app_title":     { en: "💱 Currency Converter", fa: "💱 مبدل ارز" },
@@ -23,6 +25,10 @@ function t(key) {
     return translations[key]?.[currentLang] || key;
 }
 
+function flagSrc(cc) {
+    return FLAG_URL + cc + ".png";
+}
+
 function formatNumber(value) {
     if (value >= 1) return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     if (value >= 0.01) return value.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 });
@@ -37,7 +43,8 @@ function updateSelector(prefix, code) {
     const c = getCurrency(code);
     if (!c) return;
     document.getElementById(prefix + "-currency").value = code;
-    document.getElementById(prefix + "-flag").textContent = c.flag;
+    document.getElementById(prefix + "-flag").src = flagSrc(c.cc);
+    document.getElementById(prefix + "-flag").alt = c.code;
     document.getElementById(prefix + "-code").textContent = c.code;
     document.getElementById(prefix + "-name").textContent = c[currentLang];
 }
@@ -52,7 +59,7 @@ function openDropdown(prefix) {
 
     dropdown.style.top = (rect.bottom + window.scrollY + 4) + "px";
     dropdown.style.left = rect.left + "px";
-    dropdown.style.width = Math.max(rect.width, 260) + "px";
+    dropdown.style.width = Math.max(rect.width, 280) + "px";
 
     const search = document.getElementById("dropdown-search");
     search.value = "";
@@ -87,7 +94,7 @@ function renderOptions(filter) {
 
         const isActive = c.code === currentCode ? " active" : "";
         html += `<div class="currency-option${isActive}" data-code="${c.code}" onclick="selectCurrency('${c.code}')">
-            <span class="flag-emoji">${c.flag}</span>
+            <img class="opt-flag" src="${flagSrc(c.cc)}" alt="${c.code}">
             <span class="opt-code">${c.code}</span>
             <span class="opt-name">${c[currentLang]}</span>
         </div>`;
@@ -173,8 +180,10 @@ async function convert() {
         const fromC = getCurrency(fromCode);
         const toC = getCurrency(toCode);
 
-        document.getElementById("result-flags").textContent =
-            `${fromC?.flag || ""} → ${toC?.flag || ""}`;
+        document.getElementById("result-flags").innerHTML =
+            `<img class="result-flag-img" src="${flagSrc(fromC.cc)}" alt="${fromCode}">` +
+            `<span class="result-arrow">→</span>` +
+            `<img class="result-flag-img" src="${flagSrc(toC.cc)}" alt="${toCode}">`;
         document.getElementById("result-amount").textContent =
             `${formatNumber(data.result)} ${toCode}`;
         document.getElementById("result-rate").textContent =

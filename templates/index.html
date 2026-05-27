@@ -1,47 +1,47 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مبدل ارز | Currency Converter</title>
+    <title>Currency Converter | مبدل ارز</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1 id="app-title"><span class="title-icon">💱</span>مبدل ارز</h1>
-            <button id="lang-btn" onclick="toggleLanguage()">English</button>
+            <h1 id="app-title">💱 Currency Converter</h1>
+            <button id="lang-btn" onclick="toggleLanguage()">فارسی</button>
         </header>
 
         <div class="converter-card">
             <div class="input-group">
-                <label id="amount-label" for="amount">مبلغ</label>
-                <input type="number" id="amount" min="0" step="any" placeholder="مبلغ را وارد کنید...">
+                <label id="amount-label" for="amount">Amount</label>
+                <input type="number" id="amount" min="0" step="any" placeholder="Enter amount...">
             </div>
 
             <div class="currency-row">
                 <div class="currency-group" id="from-group">
-                    <label id="from-label">از ارز</label>
+                    <label id="from-label">From</label>
                     <div class="selected-flag" id="from-trigger">
-                        <span class="flag-emoji" id="from-flag">🇺🇸</span>
+                        <img class="flag-img" id="from-flag" src="https://flagcdn.com/w40/us.png" alt="USD">
                         <div class="currency-info">
                             <span class="currency-code" id="from-code">USD</span>
-                            <span class="currency-name" id="from-name">دلار آمریکا</span>
+                            <span class="currency-name" id="from-name">US Dollar</span>
                         </div>
                         <span class="arrow">▼</span>
                     </div>
                     <input type="hidden" id="from-currency" value="USD">
                 </div>
 
-                <button id="swap-btn" onclick="swapCurrencies()" title="جابجایی ارزها">⇄</button>
+                <button id="swap-btn" onclick="swapCurrencies()" title="Swap currencies">⇄</button>
 
                 <div class="currency-group" id="to-group">
-                    <label id="to-label">به ارز</label>
+                    <label id="to-label">To</label>
                     <div class="selected-flag" id="to-trigger">
-                        <span class="flag-emoji" id="to-flag">🇮🇷</span>
+                        <img class="flag-img" id="to-flag" src="https://flagcdn.com/w40/ir.png" alt="IRR">
                         <div class="currency-info">
                             <span class="currency-code" id="to-code">IRR</span>
-                            <span class="currency-name" id="to-name">ریال ایران</span>
+                            <span class="currency-name" id="to-name">Iranian Rial</span>
                         </div>
                         <span class="arrow">▼</span>
                     </div>
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <button id="convert-btn" onclick="convert()">تبدیل</button>
+            <button id="convert-btn" onclick="convert()">Convert</button>
 
             <div id="result-box" class="result-box hidden">
                 <div class="result-flags" id="result-flags"></div>
@@ -62,12 +62,12 @@
         </div>
 
         <footer>
-            <p id="footer-text">نرخ ارزهای ریالی از tgju.org و سایر ارزها از ExchangeRate-API</p>
+            <p id="footer-text">IRR rates from tgju.org, other currencies from ExchangeRate-API</p>
         </footer>
     </div>
 
     <div class="currency-dropdown" id="currency-dropdown">
-        <input type="text" class="search-input" id="dropdown-search" placeholder="جستجو...">
+        <input type="text" class="search-input" id="dropdown-search" placeholder="Search...">
         <div id="dropdown-options"></div>
     </div>
 
