@@ -34,14 +34,24 @@ class CurrencyConverter:
 
         if from_code == "IRR":
             rate_per_unit = self._irr_rates.get(to_code)
-            if rate_per_unit is None:
+            if rate_per_unit is not None:
+                return amount / rate_per_unit
+            # Cross-rate: IRR -> USD -> target
+            usd_rate = self._irr_rates.get("USD")
+            if usd_rate is None:
                 raise ValueError(f"نرخ {to_code} موجود نیست")
-            return amount / rate_per_unit
+            amount_usd = amount / usd_rate
+            return self._convert_international(amount_usd, "USD", to_code)
         else:
             rate_per_unit = self._irr_rates.get(from_code)
-            if rate_per_unit is None:
+            if rate_per_unit is not None:
+                return amount * rate_per_unit
+            # Cross-rate: source -> USD -> IRR
+            usd_rate = self._irr_rates.get("USD")
+            if usd_rate is None:
                 raise ValueError(f"نرخ {from_code} موجود نیست")
-            return amount * rate_per_unit
+            amount_usd = self._convert_international(amount, from_code, "USD")
+            return amount_usd * usd_rate
 
     def _convert_international(self, amount: float, from_code: str, to_code: str) -> float:
         if not self._exchange_rates or self._exchange_base != from_code:

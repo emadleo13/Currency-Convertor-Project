@@ -36,9 +36,44 @@ CURRENCIES = {
     "TJS": {"en": "Tajikistani Somoni", "fa": "سامانی تاجیکستان", "symbol": "SM", "flag": "🇹🇯"},
     "TMT": {"en": "Turkmenistani Manat", "fa": "منات ترکمنستان", "symbol": "T", "flag": "🇹🇲"},
     "SYP": {"en": "Syrian Pound", "fa": "لیر سوریه", "symbol": "£S", "flag": "🇸🇾"},
+    # Europe
+    "RON": {"en": "Romanian Leu", "fa": "لئو رومانی", "symbol": "lei", "flag": "🇷🇴"},
+    "PLN": {"en": "Polish Zloty", "fa": "زلوتی لهستان", "symbol": "zł", "flag": "🇵🇱"},
+    "CZK": {"en": "Czech Koruna", "fa": "کرون چک", "symbol": "Kč", "flag": "🇨🇿"},
+    "HUF": {"en": "Hungarian Forint", "fa": "فورینت مجارستان", "symbol": "Ft", "flag": "🇭🇺"},
+    "BGN": {"en": "Bulgarian Lev", "fa": "لو بلغارستان", "symbol": "лв", "flag": "🇧🇬"},
+    "HRK": {"en": "Croatian Kuna", "fa": "کونا کرواسی", "symbol": "kn", "flag": "🇭🇷"},
+    "RSD": {"en": "Serbian Dinar", "fa": "دینار صربستان", "symbol": "din.", "flag": "🇷🇸"},
+    "UAH": {"en": "Ukrainian Hryvnia", "fa": "هریونیا اوکراین", "symbol": "₴", "flag": "🇺🇦"},
+    "ISK": {"en": "Icelandic Krona", "fa": "کرون ایسلند", "symbol": "kr", "flag": "🇮🇸"},
+    # Americas
+    "BRL": {"en": "Brazilian Real", "fa": "رئال برزیل", "symbol": "R$", "flag": "🇧🇷"},
+    "MXN": {"en": "Mexican Peso", "fa": "پزو مکزیک", "symbol": "MX$", "flag": "🇲🇽"},
+    "ARS": {"en": "Argentine Peso", "fa": "پزو آرژانتین", "symbol": "AR$", "flag": "🇦🇷"},
+    "CLP": {"en": "Chilean Peso", "fa": "پزو شیلی", "symbol": "CL$", "flag": "🇨🇱"},
+    "COP": {"en": "Colombian Peso", "fa": "پزو کلمبیا", "symbol": "CO$", "flag": "🇨🇴"},
+    # Africa
+    "ZAR": {"en": "South African Rand", "fa": "رند آفریقای جنوبی", "symbol": "R", "flag": "🇿🇦"},
+    "EGP": {"en": "Egyptian Pound", "fa": "پوند مصر", "symbol": "E£", "flag": "🇪🇬"},
+    "NGN": {"en": "Nigerian Naira", "fa": "نایرا نیجریه", "symbol": "₦", "flag": "🇳🇬"},
+    "MAD": {"en": "Moroccan Dirham", "fa": "درهم مراکش", "symbol": "د.م.", "flag": "🇲🇦"},
+    "TND": {"en": "Tunisian Dinar", "fa": "دینار تونس", "symbol": "د.ت", "flag": "🇹🇳"},
+    "KES": {"en": "Kenyan Shilling", "fa": "شیلینگ کنیا", "symbol": "KSh", "flag": "🇰🇪"},
+    # Asia & Oceania
+    "IDR": {"en": "Indonesian Rupiah", "fa": "روپیه اندونزی", "symbol": "Rp", "flag": "🇮🇩"},
+    "PHP": {"en": "Philippine Peso", "fa": "پزو فیلیپین", "symbol": "₱", "flag": "🇵🇭"},
+    "VND": {"en": "Vietnamese Dong", "fa": "دونگ ویتنام", "symbol": "₫", "flag": "🇻🇳"},
+    "BDT": {"en": "Bangladeshi Taka", "fa": "تاکا بنگلادش", "symbol": "৳", "flag": "🇧🇩"},
+    "LKR": {"en": "Sri Lankan Rupee", "fa": "روپیه سریلانکا", "symbol": "Rs", "flag": "🇱🇰"},
+    "TWD": {"en": "New Taiwan Dollar", "fa": "دلار تایوان", "symbol": "NT$", "flag": "🇹🇼"},
+    "JOD": {"en": "Jordanian Dinar", "fa": "دینار اردن", "symbol": "د.ا", "flag": "🇯🇴"},
+    "LBP": {"en": "Lebanese Pound", "fa": "لیر لبنان", "symbol": "ل.ل", "flag": "🇱🇧"},
+    "ILS": {"en": "Israeli Shekel", "fa": "شکل اسرائیل", "symbol": "₪", "flag": "🇮🇱"},
+    "UZS": {"en": "Uzbekistani Som", "fa": "سوم ازبکستان", "symbol": "сўм", "flag": "🇺🇿"},
+    "KZT": {"en": "Kazakhstani Tenge", "fa": "تنگه قزاقستان", "symbol": "₸", "flag": "🇰🇿"},
 }
 
 POPULAR_CURRENCIES = [
     "IRR", "USD", "EUR", "GBP", "AED", "TRY", "SAR", "CAD",
-    "AUD", "CHF", "JPY", "CNY", "INR", "KWD",
+    "AUD", "CHF", "JPY", "CNY", "INR", "KWD", "RON", "BRL",
 ]

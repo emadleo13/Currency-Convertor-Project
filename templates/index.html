@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <header>
-            <h1 id="app-title">مبدل ارز</h1>
+            <h1 id="app-title"><span class="title-icon">💱</span>مبدل ارز</h1>
             <button id="lang-btn" onclick="toggleLanguage()">English</button>
         </header>
 
@@ -20,34 +20,39 @@
             </div>
 
             <div class="currency-row">
-                <div class="currency-group">
+                <div class="currency-group" id="from-group">
                     <label id="from-label">از ارز</label>
-                    <select id="from-currency">
-                        {% for c in currencies %}
-                        <option value="{{ c.code }}" {{ 'selected' if c.code == 'USD' }}>
-                            {{ c.flag }} {{ c.code }} - {{ c.fa }}
-                        </option>
-                        {% endfor %}
-                    </select>
+                    <div class="selected-flag" id="from-trigger">
+                        <span class="flag-emoji" id="from-flag">🇺🇸</span>
+                        <div class="currency-info">
+                            <span class="currency-code" id="from-code">USD</span>
+                            <span class="currency-name" id="from-name">دلار آمریکا</span>
+                        </div>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <input type="hidden" id="from-currency" value="USD">
                 </div>
 
-                <button id="swap-btn" onclick="swapCurrencies()" title="جابجایی ارزها">&#8644;</button>
+                <button id="swap-btn" onclick="swapCurrencies()" title="جابجایی ارزها">⇄</button>
 
-                <div class="currency-group">
+                <div class="currency-group" id="to-group">
                     <label id="to-label">به ارز</label>
-                    <select id="to-currency">
-                        {% for c in currencies %}
-                        <option value="{{ c.code }}" {{ 'selected' if c.code == 'IRR' }}>
-                            {{ c.flag }} {{ c.code }} - {{ c.fa }}
-                        </option>
-                        {% endfor %}
-                    </select>
+                    <div class="selected-flag" id="to-trigger">
+                        <span class="flag-emoji" id="to-flag">🇮🇷</span>
+                        <div class="currency-info">
+                            <span class="currency-code" id="to-code">IRR</span>
+                            <span class="currency-name" id="to-name">ریال ایران</span>
+                        </div>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <input type="hidden" id="to-currency" value="IRR">
                 </div>
             </div>
 
             <button id="convert-btn" onclick="convert()">تبدیل</button>
 
             <div id="result-box" class="result-box hidden">
+                <div class="result-flags" id="result-flags"></div>
                 <div id="result-amount" class="result-amount"></div>
                 <div id="result-rate" class="result-rate"></div>
                 <div id="result-source" class="result-source"></div>
@@ -59,6 +64,11 @@
         <footer>
             <p id="footer-text">نرخ ارزهای ریالی از tgju.org و سایر ارزها از ExchangeRate-API</p>
         </footer>
+    </div>
+
+    <div class="currency-dropdown" id="currency-dropdown">
+        <input type="text" class="search-input" id="dropdown-search" placeholder="جستجو...">
+        <div id="dropdown-options"></div>
     </div>
 
     <script>

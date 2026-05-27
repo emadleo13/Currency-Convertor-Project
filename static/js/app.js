@@ -1,7 +1,8 @@
 let currentLang = "fa";
+let activeDropdown = null;
 
 const translations = {
-    "app_title":     { en: "Currency Converter", fa: "مبدل ارز" },
+    "app_title":     { en: "💱 Currency Converter", fa: "💱 مبدل ارز" },
     "amount_label":  { en: "Amount", fa: "مبلغ" },
     "from_label":    { en: "From", fa: "از ارز" },
     "to_label":      { en: "To", fa: "به ارز" },
@@ -15,6 +16,7 @@ const translations = {
     "source_label":  { en: "Source: ", fa: "منبع: " },
     "invalid":       { en: "Please enter a valid amount.", fa: "لطفاً مبلغ معتبر وارد کنید." },
     "error_network": { en: "Network error. Please try again.", fa: "خطای شبکه. لطفاً دوباره تلاش کنید." },
+    "search":        { en: "Search...", fa: "جستجو..." },
 };
 
 function t(key) {
@@ -27,6 +29,79 @@ function formatNumber(value) {
     return value.toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 });
 }
 
+function getCurrency(code) {
+    return CURRENCIES_DATA.find(c => c.code === code);
+}
+
+function updateSelector(prefix, code) {
+    const c = getCurrency(code);
+    if (!c) return;
+    document.getElementById(prefix + "-currency").value = code;
+    document.getElementById(prefix + "-flag").textContent = c.flag;
+    document.getElementById(prefix + "-code").textContent = c.code;
+    document.getElementById(prefix + "-name").textContent = c[currentLang];
+}
+
+function openDropdown(prefix) {
+    const dropdown = document.getElementById("currency-dropdown");
+    const trigger = document.getElementById(prefix + "-trigger");
+    const rect = trigger.getBoundingClientRect();
+    const currentCode = document.getElementById(prefix + "-currency").value;
+
+    activeDropdown = prefix;
+
+    dropdown.style.top = (rect.bottom + window.scrollY + 4) + "px";
+    dropdown.style.left = rect.left + "px";
+    dropdown.style.width = Math.max(rect.width, 260) + "px";
+
+    const search = document.getElementById("dropdown-search");
+    search.value = "";
+    search.placeholder = t("search");
+    renderOptions("");
+    dropdown.classList.add("open");
+
+    const activeOpt = dropdown.querySelector(`.currency-option[data-code="${currentCode}"]`);
+    if (activeOpt) {
+        setTimeout(() => activeOpt.scrollIntoView({ block: "center", behavior: "instant" }), 50);
+    }
+
+    setTimeout(() => search.focus(), 100);
+}
+
+function closeDropdown() {
+    document.getElementById("currency-dropdown").classList.remove("open");
+    activeDropdown = null;
+}
+
+function renderOptions(filter) {
+    const container = document.getElementById("dropdown-options");
+    const currentCode = activeDropdown ? document.getElementById(activeDropdown + "-currency").value : "";
+    const lowerFilter = filter.toLowerCase();
+
+    let html = "";
+    CURRENCIES_DATA.forEach(c => {
+        const matchEn = c.en.toLowerCase().includes(lowerFilter);
+        const matchFa = c.fa.includes(filter);
+        const matchCode = c.code.toLowerCase().includes(lowerFilter);
+        if (filter && !matchEn && !matchFa && !matchCode) return;
+
+        const isActive = c.code === currentCode ? " active" : "";
+        html += `<div class="currency-option${isActive}" data-code="${c.code}" onclick="selectCurrency('${c.code}')">
+            <span class="flag-emoji">${c.flag}</span>
+            <span class="opt-code">${c.code}</span>
+            <span class="opt-name">${c[currentLang]}</span>
+        </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function selectCurrency(code) {
+    if (activeDropdown) {
+        updateSelector(activeDropdown, code);
+    }
+    closeDropdown();
+}
+
 function toggleLanguage() {
     currentLang = currentLang === "fa" ? "en" : "fa";
     applyLanguage();
@@ -37,7 +112,7 @@ function applyLanguage() {
     html.lang = currentLang;
     html.dir = currentLang === "fa" ? "rtl" : "ltr";
 
-    document.getElementById("app-title").textContent = t("app_title");
+    document.getElementById("app-title").innerHTML = t("app_title");
     document.getElementById("lang-btn").textContent = t("lang_switch");
     document.getElementById("amount-label").textContent = t("amount_label");
     document.getElementById("amount").placeholder = t("placeholder");
@@ -47,31 +122,15 @@ function applyLanguage() {
     document.getElementById("swap-btn").title = t("swap_tooltip");
     document.getElementById("footer-text").textContent = t("footer");
 
-    const fromSelect = document.getElementById("from-currency");
-    const toSelect = document.getElementById("to-currency");
-    const fromVal = fromSelect.value;
-    const toVal = toSelect.value;
-
-    [fromSelect, toSelect].forEach(select => {
-        for (let i = 0; i < select.options.length; i++) {
-            const code = select.options[i].value;
-            const c = CURRENCIES_DATA.find(x => x.code === code);
-            if (c) {
-                select.options[i].textContent = `${c.flag} ${c.code} - ${c[currentLang]}`;
-            }
-        }
-    });
-
-    fromSelect.value = fromVal;
-    toSelect.value = toVal;
+    updateSelector("from", document.getElementById("from-currency").value);
+    updateSelector("to", document.getElementById("to-currency").value);
 }
 
 function swapCurrencies() {
-    const from = document.getElementById("from-currency");
-    const to = document.getElementById("to-currency");
-    const temp = from.value;
-    from.value = to.value;
-    to.value = temp;
+    const fromCode = document.getElementById("from-currency").value;
+    const toCode = document.getElementById("to-currency").value;
+    updateSelector("from", toCode);
+    updateSelector("to", fromCode);
 }
 
 async function convert() {
@@ -111,6 +170,11 @@ async function convert() {
             return;
         }
 
+        const fromC = getCurrency(fromCode);
+        const toC = getCurrency(toCode);
+
+        document.getElementById("result-flags").textContent =
+            `${fromC?.flag || ""} → ${toC?.flag || ""}`;
         document.getElementById("result-amount").textContent =
             `${formatNumber(data.result)} ${toCode}`;
         document.getElementById("result-rate").textContent =
@@ -130,4 +194,23 @@ async function convert() {
 
 document.getElementById("amount").addEventListener("keypress", function(e) {
     if (e.key === "Enter") convert();
+});
+
+document.getElementById("from-trigger").addEventListener("click", () => openDropdown("from"));
+document.getElementById("to-trigger").addEventListener("click", () => openDropdown("to"));
+
+document.getElementById("dropdown-search").addEventListener("input", function() {
+    renderOptions(this.value);
+});
+
+document.addEventListener("click", function(e) {
+    const dropdown = document.getElementById("currency-dropdown");
+    if (!dropdown.contains(e.target) &&
+        !e.target.closest(".selected-flag")) {
+        closeDropdown();
+    }
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeDropdown();
 });

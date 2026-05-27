@@ -49,6 +49,11 @@ def convert():
         result = converter.convert(amount, from_code, to_code)
         rate = converter.get_rate(from_code, to_code)
 
+        if involves_irr and source == "tgju.org":
+            other = to_code if from_code == "IRR" else from_code
+            if other not in converter._irr_rates:
+                source = "tgju.org + ExchangeRate-API"
+
         return jsonify({
             "result": result,
             "rate": rate,
