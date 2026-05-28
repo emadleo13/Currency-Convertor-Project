@@ -2,6 +2,6 @@ services:
   - type: web
     name: currency-converter
     runtime: python
-    buildCommand: pip install -r requirements-web.txt
+    buildCommand: pip install -r requirements.txt
     startCommand: gunicorn web_app:app --bind 0.0.0.0:$PORT
     plan: free
